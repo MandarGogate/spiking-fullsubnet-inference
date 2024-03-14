@@ -8,8 +8,7 @@ import torch
 import librosa
 
 
-def enhance():
-    global model
+def enhance(args):
     config_path = Path(f"./model_zoo/{args.model}.toml").expanduser().absolute()
     model_path = Path(f"./model_zoo/{args.model}.pt").expanduser().absolute()
     config = toml.load(config_path.as_posix())
@@ -28,9 +27,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Evaluate the model on a given audio file.')
     parser.add_argument('-i', '--input', help='Input audio file', required=True)
     parser.add_argument('-o', '--output', help='Output audio file', required=True)
-    parser.add_argument('-m', '--model', help='Select model', required=True, default="XL",
+    parser.add_argument('-m', '--model', help='Select model', required=False, default="XL",
                         choices=['S', 'M', 'L', 'XL'])
     parser.add_argument('-d', '--device', help='Device to run the model on', default='cpu')
     args = parser.parse_args()
-
-    enhance()
+    enhance(args)

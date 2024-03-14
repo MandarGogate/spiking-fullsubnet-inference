@@ -25,7 +25,7 @@ def stft(
         n_fft: int,
         hop_length: int,
         win_length: int,
-        output_type: Literal["mag_phase", "real_imag", "complex"] | None = None,
+        output_type=None,
 ) -> Union[Tensor, tuple[Tensor, ...]]:
     """Wrapper of the official ``torch.stft`` for single-channel and multichannel signals.
 
@@ -68,17 +68,16 @@ def stft(
         )
 
     if output_type:
-        match output_type:
-            case "mag_phase":
-                return mag_phase(complex_valued_stft)
-            case "real_imag":
-                return complex_valued_stft.real, complex_valued_stft.imag
-            case "complex":
-                return complex_valued_stft
-            case _:
-                raise NotImplementedError(
-                    "Only 'mag_phase', 'real_imag', and 'complex' are supported"
-                )
+        if output_type == "mag_phase":
+            return mag_phase(complex_valued_stft)
+        elif output_type == "real_imag":
+            return complex_valued_stft.real, complex_valued_stft.imag
+        elif output_type == "complex":
+            return complex_valued_stft
+        else:
+            raise NotImplementedError(
+                "Only 'mag_phase', 'real_imag', and 'complex' are supported"
+            )
     else:
         return (
             *mag_phase(complex_valued_stft),
