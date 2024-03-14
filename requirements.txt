@@ -1,0 +1,6 @@
+einops
+librosa
+numpy
+soundfile
+toml
+torch
